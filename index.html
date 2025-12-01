@@ -321,18 +321,11 @@ for (let i = 1; i <= 24; i++) {
   span.textContent = i;
   btn.appendChild(span);
 
-  if (i > today) {
-    btn.classList.add('locked');
-    btn.addEventListener('click', () => {
-      openModalMessage("No seas tan impaciente chochoo");
-    });
-  } else {
-    btn.addEventListener('click', () => {
-      btn.classList.add('open');
-      activeDay = btn;
-      setTimeout(() => openModalContent(i), 500);
-    });
-  }
+btn.addEventListener('click', () => {
+  btn.classList.add('open');
+  activeDay = btn;
+  setTimeout(() => openModalContent(i), 500);
+});
 
   door.appendChild(btn);
   cal.appendChild(door);
