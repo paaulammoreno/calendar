@@ -166,6 +166,11 @@
     text-align: center;
     text-decoration: none;
   }
+
+  /* Tió retro */
+  #tioBox { background: #000; color: #0f0; font-family: monospace; padding:10px; font-size:13px; white-space:pre; border:1px solid #0f0; margin-top:20px; }
+  #tioAnim { transition: opacity 0.15s; min-height:180px; }
+  #tioCaga { color:#ff0; min-height:28px; margin-top:6px; }
 </style>
 </head>
 <body>
@@ -195,22 +200,56 @@
 
 <script>
 const dataHTML = {
-  1: `<p>Texto del día 1…</p>`,
+  1: `<p>Día 1: Bienvenida al calendario digital.</p>`,
+  2: `<p>Día 2: Aquí aparece el Tió animado.</p>`,
+  3: `<p>Día 3 — texto normal.</p>`,
+  4: `<p>Día 4.</p>`,
+  24: `<p>Feliz día 24</p>`
+};
 
-  2: `
-<style>
-  #tioBox { background: #000; color: #0f0; font-family: monospace; padding:10px; font-size:13px; white-space:pre; border:1px solid #0f0; margin-top:20px; }
-  #tioAnim { transition: opacity 0.15s; min-height:180px; }
-  #tioCaga { color:#ff0; min-height:28px; margin-top:6px; }
-</style>
-<div id="tioBox">
-  <div id="tioAnim"></div>
-  <div id="tioCaga"></div>
-</div>
-<script>
-(function(){
-const framesTio=[
-\`           ____#######
+const cal = document.getElementById('calendar');
+let activeDay = null;
+
+function formatDate(day) {
+  return `${day} de Diciembre`;
+}
+
+// Crear calendario
+for (let i=1;i<=24;i++){
+  const door=document.createElement('div');
+  door.className='door';
+  const btn=document.createElement('div');
+  btn.className='day';
+  const span=document.createElement('span');
+  span.textContent=i;
+  btn.appendChild(span);
+
+  btn.addEventListener('click',()=>{
+    btn.classList.add('open');
+    activeDay=btn;
+    setTimeout(()=>openModalContent(i),500);
+  });
+
+  door.appendChild(btn);
+  cal.appendChild(door);
+}
+
+// Modal
+function openModalContent(day){
+  const modalContent=document.getElementById('modalContent');
+  modalContent.innerHTML=
+    `<p style="text-align:left; margin-bottom:20px; font-weight: normal;">${formatDate(day)}</p>` +
+    dataHTML[day]+
+    `<div id="tioBox">
+       <div id="tioAnim"></div>
+       <div id="tioCaga"></div>
+     </div>`;
+
+  document.getElementById('modal').style.display='block';
+
+  // Animación Tió
+  const framesTio=[
+`           ____#######
          .'           '.
         /    o     o    \\
        |       ___       |
@@ -222,8 +261,8 @@ const framesTio=[
         ======| || |======
         ||||||| || |||||||
         ||||||| || |||||||
-        =======    =======\`,
-\`           ____#######
+        =======    =======`,
+`           ____#######
          .'           '.
         /    o     o    \\
        |       ___       |
@@ -235,85 +274,7 @@ const framesTio=[
         ======| || |======
         ||||||| || |||||||
         ||||||| || |||||||
-        =======    =======\`
-];
-const framesCaga=["","","     *","    * o *","   * o @ o *","    o * # * o","     *",""];
-let ti=0,tj=0,tstep=0;
-const animEl=document.getElementById("tioAnim");
-const cagaEl=document.getElementById("tioCaga");
-const interval=setInterval(()=>{
-if(!animEl||!cagaEl){clearInterval(interval);return;}
-animEl.textContent=framesTio[ti%framesTio.length];
-ti++;
-if(ti%10===0){tstep=1;tj=0;}
-if(tstep===1){
-cagaEl.textContent=framesCaga[tj%framesCaga.length];
-tj++;
-if(tj>=framesCaga.length)tstep=0;
-}
-},250);
-})();
-</script>
-`,
+        =======    =======`
+  ];
+  const framesCaga=["","","     *","    * o *","   * o @ o *","    o * # * o",*]()
 
-  3: `<p>Día 3 — texto normal.</p>`,
-  4: `<p>Día 4.</p>`,
-  24: `<p>Feliz día 24</p>`
-};
-
-const cal=document.getElementById('calendar');
-let activeDay=null;
-
-function formatDate(day){ return \`\${day} de Diciembre\`; }
-
-for(let i=1;i<=24;i++){
-  const door=document.createElement('div');
-  door.className='door';
-  const btn=document.createElement('div');
-  btn.className='day';
-  const span=document.createElement('span');
-  span.textContent=i;
-  btn.appendChild(span);
-  btn.addEventListener('click',()=>{
-    btn.classList.add('open');
-    activeDay=btn;
-    setTimeout(()=>openModalContent(i),500);
-  });
-  door.appendChild(btn);
-  cal.appendChild(door);
-}
-
-function openModalContent(day){
-  document.getElementById('modalContent').innerHTML=
-    `<p style="text-align:left; margin-bottom:20px; font-weight: normal;">${formatDate(day)}</p>`+
-    dataHTML[day];
-  document.getElementById('modal').style.display='block';
-}
-
-function closeModal(){
-  document.getElementById('modal').style.display='none';
-  if(activeDay) activeDay.classList.remove('open');
-  activeDay=null;
-}
-
-function startCalendar(){
-  document.getElementById('intro').style.display='none';
-  const loading=document.getElementById('loading');
-  loading.style.display='flex';
-  const box=document.querySelector('.loading-box');
-  box.classList.add('fill');
-  setTimeout(()=>{
-    loading.style.display='none';
-    document.getElementById('calendar').style.display='grid';
-    box.classList.remove('fill');
-  },3200);
-}
-
-document.getElementById('intro').addEventListener('click',startCalendar);
-window.addEventListener('keydown',e=>{if(e.key==='Enter')startCalendar();});
-window.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
-document.getElementById('modal').addEventListener('click',e=>{if(e.target.id==='modal')closeModal();});
-</script>
-
-</body>
-</html>
