@@ -205,99 +205,10 @@ const dataHTML = {
     <p>Paula.</p>
   `,
   2: `
-<style>
-  #tioBox {
-    background: #000;
-    color: #0f0;
-    font-family: monospace;
-    padding: 10px;
-    font-size: 13px;
-    white-space: pre;
-    border: 1px solid #0f0;
-    margin-top: 20px;
-  }
-  #tioAnim {
-    transition: opacity 0.15s;
-  }
-  #tioCaga {
-    color: #ff0;
-  }
-</style>
-
-<div id="tioBox">
-  <div id="tioAnim"></div>
-  <div id="tioCaga"></div>
-</div>
-
-<script>
-const framesTio = [
-String.raw`
-           ____#######
-         .'           '.
-        /    o     o    \
-       |       ___       |
-       |      (___)      |
-        \      ---      /
-         '.           .'
-           '----+----'
-               /||\
-        ======| || |======
-        ||||||| || |||||||
-        ||||||| || |||||||
-        =======    =======
-`,
-
-String.raw`
-           ____#######
-         .'           '.
-        /    o     o    \
-       |       ___       |
-       |      (   )      |
-        \      ---      /
-         '.           .'
-           '----+----'
-               /||\
-        ======| || |======
-        ||||||| || |||||||
-        ||||||| || |||||||
-        =======    =======
-`
-];
-
-const framesCaga = [
-"",
-"",
-"     *",
-"    * o *",
-"   * o @ o *",
-"    o * # * o",
-"     *",
-""
-];
-
-let ti = 0;
-let tj = 0;
-let tstep = 0;
-
-setInterval(() => {
-  document.getElementById("tioAnim").textContent =
-    framesTio[ti % framesTio.length];
-  ti++;
-
-  if (ti % 10 === 0) {
-    tstep = 1;
-    tj = 0;
-  }
-
-  if (tstep === 1) {
-    document.getElementById("tioCaga").textContent =
-      framesCaga[tj % framesCaga.length];
-    tj++;
-    if (tj >= framesCaga.length) tstep = 0;
-  }
-}, 250);
-</script>
-
+    <p>Día 2 con un video de YouTube.</p>
+    <img src="fotos/ejemplo.jpg" alt="Imagen Día 2">
+    <video src="videos/ejemplo.mp4" controls></video>
+    <iframe src="https://www.youtube.com/embed/VIDEO_ID" frameborder="0" allowfullscreen></iframe>
   `,
   3: `<p>Día 3 — texto normal.</p>`,
   4: `<p>Día 4.</p>`,
@@ -321,11 +232,12 @@ for (let i = 1; i <= 24; i++) {
   span.textContent = i;
   btn.appendChild(span);
 
-btn.addEventListener('click', () => {
+  btn.addEventListener('click', () => {
   btn.classList.add('open');
   activeDay = btn;
   setTimeout(() => openModalContent(i), 500);
 });
+
 
   door.appendChild(btn);
   cal.appendChild(door);
